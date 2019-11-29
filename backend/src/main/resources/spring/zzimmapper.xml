@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.ZzimMapper">
+
+<insert id="insert" parameterType="zzim">
+    insert into zzim(id,code) values(#{id},#{code})
+</insert>
+
+<select id="select" parameterType="string" resultMap="zzimMap">
+    select * from zzim z 
+    join food f on 
+    z.code=f.code
+	where id=#{id}
+</select>
+
+<select id="IsZzim" parameterType="zzim" resultType="zzim">
+    select * from zzim
+    where id=#{id} and code=#{code}
+</select>
+
+
+<select id="check" parameterType="zzim" resultType="zzim">
+    select * from zzim where id=#{id} and code=#{code}
+</select> 
+
+<delete id="delete" parameterType="zzim">
+    delete from zzim where id=#{id} and code=#{code}
+</delete>
+
+<resultMap type="zzim" id="zzimMap">
+   <id column="no" property="no"/>
+   <result column="id" property="id"/>
+   <result column="code" property="code"/>
+   <result column="regdate" property="regdate"/>
+   <collection property="food" resultMap="food"></collection>
+</resultMap>
+
+
+<resultMap type="food" id="food">
+	 	<id column="code" property="code"/>
+		<result column="name" property="name" />
+		<result column="supportpereat" property="supportpereat" />
+		<result column="calory" property="calory" />
+		<result column="carbo" property="carbo" />
+		<result column="protein" property="protein" />
+		<result column="fat" property="fat" />
+		<result column="sugar" property="sugar" />
+		<result column="natrium" property="natrium" />
+		<result column="chole" property="chole" />
+		<result column="fattyacid" property="fattyacid" />
+		<result column="transfat" property="transfat" />
+		<result column="maker" property="maker" />
+		<result column="material" property="material" />
+		<result column="img" property="img" />
+		<result column="allergy" property="allergy" />
+		<result column="frequency" property="frequency" />
+		<result column="sfreq" property="sfreq" />
+	</resultMap>
+
+</mapper>

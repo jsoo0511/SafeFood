@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.QnAMapper">
+
+	<select id="getQnABoardNo">
+		select max(no)+1 as no from qna
+	</select>
+
+	<insert id="insertQnABoard" parameterType="board">
+		insert into qna(no, id,
+		title, contents) values(#{no},#{id},#{title},#{contents})
+	</insert>
+
+	<update id="updateQnABoard" parameterType="board">
+		update qna set
+		title=#{title},
+		contents=#{contents} where no=#{no}
+	</update>
+
+	<delete id="deleteQnABoard">
+		delete from qna where no=#{no}
+	</delete>
+
+	<select id="searchQnABoard" parameterType="string"
+		resultType="board">
+		select no, id, title, contents, date_format(regdate,
+		'%y-%m-%d') as regdate from qna where no = #{no}
+	</select>
+
+	<select id="searchQnAall" resultType="board">
+		select no, id, title, contents, date_format(regdate,
+		'%y-%m-%d') as regdate from qna order by no desc
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from qna;
+	</select>
+	
+	<select id="larger" parameterType="int" resultType="int">
+	    select count(*) from qna where no>#{no}
+	</select>
+	
+	<select id="searchQnAPaging" resultType="board">
+	select no, id, title, contents, date_format(regdate, '%y-%m-%d') as regdate
+	    from qna
+	    order by no desc
+	    limit #{startIndex}, #{interval}
+	</select>
+	
+	<select id="getThisBoardReply" parameterType="string" resultType="reply">
+	    select * from qnaReply where boardno=#{boardno}
+	</select>
+	
+	<insert id="insertReply" parameterType="reply">
+	   insert into qnaReply(id,boardno,reply) values(#{id},#{boardno},#{reply}) 
+	</insert>
+	
+	<update id="updateReply" parameterType="reply">
+	   update qnaReply set reply=#{reply}, regdate=#{regdate} where id=#{id} and idx=#{idx}
+	</update>
+	
+	<delete id="deleteReply">
+	   delete from qnaReply where idx=#{idx}
+	</delete>
+</mapper>

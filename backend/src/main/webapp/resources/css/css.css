@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 50px;
+}
+
+.vertical {
+	vertical-align: middle;
+}
+
+/*
+ * Global add-ons
+ */
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+.whitetitle {
+	color: white !important;
+}
+
+#stext {
+	display:none;
+	position: absolute;
+	color: black;
+	z-index: 99;
+	top: 45px;
+	right: 32px;
+	width: 202px;
+	background-color: #FCFCFC;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-radius: 3px;
+	padding: 8px 12px
+}
+
+.best{
+	padding: 5px 0px;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+
+@media ( min-width : 768px) {
+	.sidebar {
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #F3F3F3;
+		/*     border-right: 1px solid #eee; */
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+	color: black;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #047300;
+	background-color: #ffffff;
+}
+
+.profile>a {
+	text-decoration: none;
+	/* 	background-color:white; */
+}
+
+.profilephoto {
+	display: inline-block;
+	border-radius: 8%;
+	background-color: black;
+	height: 60px;
+	width: 60px;
+	margin: 20px;
+	background-image: url("../img/header-logo.jpg");
+}
+
+.profiletext {
+	position: absolute;
+	left: 90px;
+	top: 20px;
+}
+
+/*
+ * Main content
+ */
+#detailimg {
+	height: 250px;
+	padding-top: 20px;
+	margin-top: 20px;
+	background-image: url('../img/bg.jpg');
+}
+
+#innerdivback {
+	position: absolute;
+	opacity: 0.4;
+	padding: 20px;
+	top: 40px;
+	left: 25px;
+	width: 40%;
+	height: inherit;
+	background-color: black;
+}
+
+#innerdiv {
+	position: absolute;
+	display: table;
+	top: 40px;
+	left: 25px;
+	width: 40%;
+	height: inherit;
+	color: #ffffff;
+}
+
+#verticalbottom {
+	display: table-cell;
+	vertical-align: bottom;
+	padding: 20px;
+	text-align: left;
+	height: inherit;
+	/* 	background-color: blue; */
+}
+
+.main {
+	padding: 20px;
+}
+
+@media ( min-width : 768px) {
+	.main {
+		padding-right: 40px;
+		padding-left: 40px;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+.green {
+	color: #047300
+}
+
+.lightgreen{
+	color: #047300
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.placeholders h4 {
+	margin-bottom: 0;
+}
+
+.placeholder {
+	margin-bottom: 20px;
+}
+
+.placeholder img {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	/*   border-radius: 50%; */
+}
+

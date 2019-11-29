@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.MemberMapper">
+	<!-- int insertMember(SqlSession session, Member member) throws SQLException; -->
+	<!-- boolean LoginMember(SqlSession session, String id, String pw) throws 
+		SQLException; -->
+	<!-- Member searchMember(SqlSession session, String id) throws SQLException; -->
+	<!-- int updateMember(SqlSession session, Member member) throws SQLException; -->
+	<!-- public void deleteMember(SqlSession session, String id) throws SQLException; -->
+	<!-- List<Member> searchAll() throws SQLException; -->
+
+	<insert id="insertMember" parameterType="member">
+		insert into signup
+		values (#{id}, #{pw}, #{name}, #{phone}, #{email}, #{allergy});
+	</insert>
+
+	<select id="loginMember" parameterType="member"
+		resultMap="memberDefault">
+		select * from signup where id = #{id} and pw = #{pw};
+	</select>
+
+	<select id="searchMember" parameterType="string"
+		resultMap="memberDefault">
+		select * from signup where id = #{id};
+	</select>
+
+	<update id="updateMember" parameterType="member">
+		update signup set pw =
+		#{pw}, name = #{name}, phone = #{phone}, email = #{email}, allergy =
+		#{allergy} where id = #{id};
+	</update>
+
+	<delete id="deleteMember">
+		delete from signup where id=#{id};
+	</delete>
+
+	<select id="searchAll" resultType="member">
+		select * from signup;
+	</select>
+
+	<select id="eatMember" parameterType="string"
+		resultMap="memberExtend">
+		select * from signup join eat using(id) where id = #{id};
+	</select>
+
+	<delete id="deleteMyEat" parameterType="java.util.Map">
+		delete from eat where idx in
+		<foreach collection="dellist" item="del" index="i" open="("
+			separator="," close=")">
+			${del}
+		</foreach>
+	</delete>
+
+	<select id="EatDetailYMD" parameterType="ymd" resultMap="eatMap">
+		<choose>
+			<when test='choice=="y"'>
+			select e.id as id, e.code as code, sum(e.amount) as
+				amount, e.foodname as foodname, year(regdate) as regdate,
+				f.supportpereat as supportpereat, f.calory as calory, f.carbo as
+				carbo,f.fat as fat, f.sugar as sugar,f.natrium as natrium,
+				f.chole as chole, f.fattyacid as fattyacid, f.transfat as transfat
+			from eat e
+			join food f on
+				e.code=f.code
+			where e.id=#{id}
+			group by id,year(regdate)
+			</when>
+			<when test='choice=="m"'>
+			select e.id as id, e.code as code, sum(e.amount) as
+				amount, e.foodname as foodname, date_format(regdate,'%Y-%m') as
+				regdate, f.supportpereat as supportpereat, f.calory as calory,
+				f.carbo as carbo,f.fat as fat, f.sugar as sugar,f.natrium as natrium,
+				f.chole as chole, f.fattyacid as fattyacid, f.transfat as transfat
+			from eat e
+			join food f on e.code=f.code
+			where e.id=#{id}
+			group by
+				id,date_format(regdate,'%Y-%m')
+			</when>
+			<otherwise>
+			select e.id as id, e.code as code, sum(e.amount) as amount, e.foodname as
+				foodname, date_format(regdate,'%Y-%m-%d') as regdate,
+				f.supportpereat as supportpereat, f.calory as calory, f.carbo as
+				carbo,f.fat as fat, f.sugar as sugar,f.natrium as natrium,
+				f.chole as chole, f.fattyacid as fattyacid, f.transfat as transfat
+			from eat e
+			join food f on e.code=f.code
+			where e.id=#{id}
+			group by
+			   id,date_format(regdate,'%Y%m%d')
+			</otherwise>
+		</choose>
+	</select>
+
+	<resultMap type="eat" id="eatMap">
+		<id column="idx" property="idx" />
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="amount" property="amount" />
+		<result column="foodname" property="foodname" />
+		<result column="regdate" property="regdate" />
+		<collection property="food" resultMap="food"></collection>
+	</resultMap>
+
+	<select id="zzimNutrients" parameterType="string"
+		resultMap="zzimMap">
+		select z.id as id,sum(f.supportpereat) as supportpereat,
+		 Round(sum(f.calory),2) as calory,
+		 sum(f.carbo) as carbo
+		 ,Round(sum(f.protein),2) as protein,
+		 sum(f.fat) as fat, sum(f.sugar) as
+		 sugar, sum(f.natrium) as natrium,
+		 sum(f.chole) as chole,
+		 sum(f.fattyacid) as fattyacid,
+		 sum(f.transfat) as transfat
+		from zzim z
+		join food f on
+		z.code=f.code
+		where z.id=#{id}
+		group by z.id;
+	</select>
+
+	<resultMap type="zzim" id="zzimMap">
+		<id column="no" property="no" />
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="regdate" property="regdate" />
+		<collection property="food" resultMap="food"></collection>
+	</resultMap>
+
+	<resultMap type="food" id="food">
+		<id column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="supportpereat" property="supportpereat" />
+		<result column="calory" property="calory" />
+		<result column="carbo" property="carbo" />
+		<result column="protein" property="protein" />
+		<result column="fat" property="fat" />
+		<result column="sugar" property="sugar" />
+		<result column="natrium" property="natrium" />
+		<result column="chole" property="chole" />
+		<result column="fattyacid" property="fattyacid" />
+		<result column="transfat" property="transfat" />
+		<result column="maker" property="maker" />
+		<result column="material" property="material" />
+		<result column="img" property="img" />
+		<result column="allergy" property="allergy" />
+		<result column="frequency" property="frequency" />
+		<result column="sfreq" property="sfreq" />
+	</resultMap>
+
+	<resultMap type="member" id="memberDefault">
+		<id column="id" property="id" />
+		<result column="pw" property="pw" />
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="allergy" property="allergy" />
+	</resultMap>
+
+
+
+	<!-- 확장형 Map -->
+	<resultMap type="member" id="memberExtend"
+		extends="memberDefault">
+		<collection property="eatlist" ofType="eat"
+			resultMap="com.ssafy.mapper.EatMapper.eatDefault">
+		</collection>
+	</resultMap>
+</mapper>

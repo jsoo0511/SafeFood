@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.SearchHistoryMapper">
+
+	<select id="selectAll" parameterType="string" resultType="history">
+		<if test="value != null">
+			select id,word,sum(count) as count
+			from SearchHistory
+			where id=#{id}
+			group by word
+			limit 10
+		</if>
+		<if test="value == null">
+			select word,sum(count) as count
+			from SearchHistory 
+			group by word
+			order by sum(count) desc
+			limit 10
+		</if>
+	</select>
+
+	<select id="select" parameterType="history" resultType="history">
+		select word 
+		from SearchHistory
+		where id=#{id} and word=#{word}
+	</select>
+
+	<!-- 검색어가 없으면 새로 테이블에 검색어 추가 -->
+	<insert id="insert" parameterType="history">
+		insert into SearchHistory(id,word,count) values(#{id},#{word},1)
+	</insert>
+
+	<!-- 검색어가 있으면 count만 +1로 업데이트 -->
+	<update id="update" parameterType="history">
+		update SearchHistory set count=count+1 where word=#{word} and id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="string">
+		delete from SearchHistory where word=#{word}
+	</delete>
+
+</mapper>

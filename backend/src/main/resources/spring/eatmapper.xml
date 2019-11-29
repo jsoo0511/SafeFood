@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.EatMapper">
+	<resultMap type="eat" id="eatDefault">
+		<id column="idx" property="idx"/>
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="amount" property="amount" />
+		<result column="foodname" property="foodname" />
+		<result column="regdate" property="regdate"/>
+	</resultMap>	
+</mapper>
